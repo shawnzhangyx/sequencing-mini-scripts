@@ -1,13 +1,13 @@
-#### This scripts will take a genome chrom sizes and generate tiling 1k windows along the chromosomes. 
+#### This scripts will take a genome chrom sizes and generate tiling windows along the chromosomes. 
 #Usage: python generate_1k_window.py [options] mm10.chrom.sizes output
 ################
 import sys
 
-INTERVAL=1000
 
 def main(argv):
   chrom_file = open(argv[1],'r')
   out_file = open(argv[2],'w')
+  INTERVAL= int(argv[3])
   chrom_dict = dict()
   for line in chrom_file:
     words = line.strip().split()
@@ -30,4 +30,7 @@ def main(argv):
         out_file.write('\t'.join([chr,str(pos),str(pos-1+INTERVAL)])+'\n')
 
 if __name__ == "__main__":
-  main(sys.argv)
+  if (len(sys.argv) < 4): 
+    raise Exception("python generate_fixed_size_genome.py genome.chrom.sizes output binsize")
+  else: 
+    main(sys.argv)

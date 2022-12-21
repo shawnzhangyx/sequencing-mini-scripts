@@ -1,5 +1,5 @@
 #### This scripts will take a genome chrom sizes and generate tiling windows along the chromosomes. 
-#Usage: python generate_1k_window.py [options] mm10.chrom.sizes output
+#Usage: python generate_fix_size_genome_segments.py [options] mm10.chrom.sizes output
 ################
 import sys
 
@@ -9,17 +9,18 @@ def main(argv):
   out_file = open(argv[2],'w')
   INTERVAL= int(argv[3])
   chrom_dict = dict()
-  for line in chrom_file:
-    words = line.strip().split()
-    chrom_dict[words[0]] = int(words[1])
     
   # only keep chroms from chr1 to chrY
-  std_chr_name = range(1,100)
+  std_chr_name = [ x for x in range(1,100)]
   std_chr_name.extend(['X','Y'])
   std_chr = ['chr'+str(x) for x in std_chr_name]
-  for chr in chrom_dict.keys(): 
-    if chr not in std_chr: 
-      chrom_dict.pop(chr,None)
+  for line in chrom_file:
+    words = line.strip().split()
+    if words[0] in std_chr:
+      chrom_dict[words[0]] = int(words[1])
+  #for chr in chrom_dict.keys(): 
+  #  if chr not in std_chr: 
+  #    chrom_dict.pop(chr,None)
   
   print(chrom_dict)
   print(len(chrom_dict))
